@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'principal/css/geral.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'principal/css/fundo.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'principal/css/toolbar.css' %}" />
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Controle de Estoque</title>
+</head>
+<body>
+
+    <table class="navigationBar">
+        <tr>
+            <td width="60px" onClick="window.location.href='{% url 'home' %}'" class="selecionado">Home</td>
+            <td width="80px" onClick="window.location.href='{% url 'listaProduto' %}'">Listagem</td>
+            <td width="50px" onClick="window.location.href='{% url 'novoProduto' %}'">Novo</td>
+            <td width="80px" onClick="window.location.href='{% url 'novaCategoria' %}'">Categoria</td>
+            <td></td>
+        </tr>
+    </table>
+
+    <h1 class="titulo1">Controle de Estoque</h1>
+
+    <table width="100%">
+        <tr>
+            <td align="center"><img src="{% static 'principal/img/estoque_geral.jpg' %}"></td>
+        </tr>
+    </table>
+
+</body>
+</html>

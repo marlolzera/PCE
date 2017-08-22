@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'principal/css/geral.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'principal/css/fundo.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'principal/css/toolbar.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'principal/css/listagem.css' %}" />
+
+<script type="text/javascript" src="{% static 'principal/js/navegacao.js' %}" ></script>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Listagem de Produtos</title>
+</head>
+<body>
+
+<table class="navigationBar">
+    <tr>
+        <td width="60px" onClick="window.location.href='{% url 'home' %}'">Home</td>
+        <td width="80px" onClick="window.location.href='{% url 'listaProduto' %}'" class="selecionado">Listagem</td>
+        <td width="50px" onClick="window.location.href='{% url 'novoProduto' %}'">Novo</td>
+        <td width="80px" onClick="window.location.href='{% url 'novaCategoria' %}'">Categoria</td>
+        <td></td>
+    </tr>
+</table>
+
+
+<h1 class="titulo1">Produtos Cadastrados</h1>
+
+<table width="1110px" class="listagem">
+
+    <tr>
+        <th width="150px">Nome</th>
+        <th width="300px">Descrição</th>
+        <th width="150px">Categoria</th>
+        <th width="40px">Qtde</th>
+        <th width="70px">Preço</th>
+        <th width="90px">Dt.Fabricação</th>
+        <th width="90px">Dt.Validade</th>
+        <th width="220px"></th>
+    </tr>
+
+{% for produto in lista_produto %}
+
+    <tr>
+        <td>{{produto.nome}}</td>
+        <td>{{produto.descricao}}</td>
+        <td>asdsadasasd</td>
+        <td>{{produto.quantidade}}</td>
+        <td>{{produto.preco}}</td>
+
+        <td>
+            {{ produto.data_fabricacao.day }}/
+            {{ produto.data_fabricacao.month }}/
+            {{ produto.data_fabricacao.year }}
+        </td>
+
+
+        <td>{{produto.data_validade}}</td>
+        <td align="center">
+            <button onclick="window.location.href='{% url 'atualizaProduto' produto.id %}'">Atualizar</button>
+            <button onclick="window.location.href='{% url 'deletaProduto' produto.id %}'">Deletar</button>
+        </td>
+    </tr>
+
+
+{% endfor %}
+
+</table>
+
+</body>
+</html>

@@ -1,0 +1,58 @@
+.cadastro{
+    background-color:#fff;
+	margin: auto;
+	text-align: left;
+	border-collapse: separate;
+    border-radius: 8px;
+	box-shadow: 2px 2px 7px #000;
+	table-layout: inherit;
+}
+
+.cadastro tr td {
+	color:#5f6062;
+	font-size:15px;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	border-bottom: 1px solid #e0e0e0;
+}
+
+.cadastro tr:nth-child(odd) td{
+	background-color: #f0f3f5;
+}
+
+.cadastro tr:last-child td:first-child{
+	border-bottom-left-radius: 6px;
+}
+
+.cadastro tr:last-child td:last-child{
+	border-bottom-right-radius: 6px;
+}
+
+.cadastro tr:first-child td:first-child{
+	border-top-left-radius: 6px;
+}
+
+.cadastro tr:first-child td:last-child{
+	border-top-right-radius: 6px;
+}
+
+.cadastro button{
+    padding: 7px 12px;
+    text-align: center;
+    color: #666;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 10px;
+
+    box-shadow: 2px 2px 7px #000;
+
+    background: #646f7f;
+	background: -webkit-linear-gradient(#eee 50%, #646f7f); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#eee 50%, #646f7f); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#eee 50%, #646f7f); /* For Firefox 3.6 to 15 */
+	background: linear-gradient(to bottom, #eee 50%, #646f7f);
+}
+
+.cadastro button:focus {
+    outline:0;
+}
