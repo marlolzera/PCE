@@ -10,21 +10,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Cadastro de Produto</title>
+    <title>Cadastro de Categoria</title>
 </head>
 <body>
 
     <table class="navigationBar">
         <tr>
             <td width="60px" onClick="window.location.href='{% url 'home' %}'">Home</td>
-            <td width="80px" onClick="window.location.href='{% url 'listaProduto' %}'">Listagem</td>
-            <td width="50px" onClick="window.location.href='{% url 'novoProduto' %}'" class="selecionado">Novo</td>
-            <td width="80px" onClick="window.location.href='{% url 'novaCategoria' %}'">Categoria</td>
+            <td width="80px" onClick="window.location.href='{% url 'lista_produto' %}'">Listagem</td>
+            <td width="50px" onClick="window.location.href='{% url 'novo_produto' %}'">Novo</td>
+            <td width="80px" onClick="window.location.href='{% url 'nova_categoria' %}'" class="selecionado">Categoria</td>
             <td></td>
         </tr>
     </table>
 
-    <h1 class="titulo1">Cadastro de Produto</h1>
+    <h1 class="titulo1">Cadastro de Categoria</h1>
 
     <form method="POST">
         {% csrf_token %}
@@ -37,26 +37,6 @@
             <tr>
                 <td>Descrição:</td>
                 <td>{{form.descricao}}</td>
-            </tr>
-            <tr>
-                <td>Quantidade:</td>
-                <td>{{form.quantidade}}</td>
-            </tr>
-            <tr>
-                <td>Preço:</td>
-                <td>{{form.preco}}</td>
-            </tr>
-            <tr>
-                <td>Dt.Fabricação:</td>
-                <td>{{form.data_fabricacao}}</td>
-            </tr>
-            <tr>
-                <td>Dt.Validade:</td>
-                <td>{{form.data_validade}}</td>
-            </tr>
-            <tr>
-                <td>Categoria:</td>
-                <td>{{form.categoria}}</td>
             </tr>
             <tr>
                 <td colspan="2" align="center"><button type="submit">Gravar</button></td>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+</head>
+<body>
+
+<form class="form-login" method="post">
+{% csrf_token %}
+  <table>
+    <tr>
+      <td>Login:</td>
+      <td><input type="text" name='username' placeholder="Usuário" required /></td>
+    </tr>
+    <tr>
+      <td>Senha:</td>
+      <td><input type="password" name='password' placeholder="Senha" required /></td>
+    </tr>
+    <tr>
+      <td colspan="2"><button type="submit">Entrar</button></td>
+    </tr>
+  </table>
+</form>
+
+<table>
+  <tr>
+    <td>Criar Conta</td>
+  </tr>
+  <tr>
+    <td><button onClick="window.location.href='/nova_conta/'">Criar conta</button></td>
+  </tr>
+</table>
+
+</body>
+</html>
