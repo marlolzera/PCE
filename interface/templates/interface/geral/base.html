@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'principal/css/geral.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'principal/css/fundo.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'principal/css/toolbar.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'principal/css/listagem.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'principal/css/formulario.css' %}" />
+
+<script type="text/javascript" src="{% static 'principal/js/navegacao.js' %}" ></script>
+
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>
+    {% block titulo %}
+
+    {% endblock %}
+  </title>
+</head>
+<body>
+
+<table class="navigationBar">
+  <tr>
+    <td width="60px" onClick="window.location.href='/home/'">Home</td>
+    <td width="80px" onClick="window.location.href='/lista_produto/'">Listagem</td>
+    <td width="50px" onClick="window.location.href='/novo_produto/'">Novo</td>
+    <td width="80px" onClick="window.location.href='/nova_categoria/'">Categoria</td>
+    <td style="text-align: right">Usuário: {{ request.user.username }}</td>
+    <td width="30px" onClick="window.location.href='/logout/'">Sair</td>
+  </tr>
+</table>
+
+{% block corpo %}
+
+{% endblock %}
+
+</body>
+</html>

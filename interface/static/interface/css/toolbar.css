@@ -19,11 +19,15 @@
     cursor: pointer;
 }
 
-.navigationBar tr td:last-child{
+.navigationBar tr td:nth-child(5){
     cursor: default;
 }
 
-.navigationBar tr td:hover:not(:last-child){
+.navigationBar tr td:hover:nth-child(1),
+.navigationBar tr td:hover:nth-child(2),
+.navigationBar tr td:hover:nth-child(3),
+.navigationBar tr td:hover:nth-child(4),
+.navigationBar tr td:hover:nth-child(6){
     color: #fff;
     background: #646f7f;
 }
