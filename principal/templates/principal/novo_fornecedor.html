@@ -1,10 +1,51 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends "interface/geral/base.html" %}
+
+{% block titulo %}
+  Cadastro de Fornecedor
+{% endblock %}
+
+{% block corpo %}
+
+  {% include "interface/geral/navigatorTop.html" %}
+
+  <h1 class="titulo1">Cadastro de Fornecedor</h1>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="col-md-6 col-md-offset-3">
+          <div class="jumbotron">
+
+            <form method="post">
+              {% csrf_token %}
+
+              {% for f in form %}
+
+                <div class="form-group">
+                  <label>{{ f.label }}</label>
+                  <div class="controls">
+                    {{ f }}
+                  </div>
+                </div>
+
+                {% if f.errors %}
+
+                  <div class="alert alert-warning">
+                    {{ f.errors }}
+                  </div>
+
+                {% endif %}
+
+              {% endfor %}
+
+              <button type="submit" class="btn btn-primary">Gravar</button>
+              <a href="/lista_fornecedor/" class="btn btn-default">Cancelar</a>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

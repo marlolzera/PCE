@@ -1,66 +1,90 @@
 .listagem {
-	background-color:#fff;
-	margin: auto;
-	text-align: center;
-	border-collapse: separate;
-    border-radius: 15px;
-	box-shadow: 2px 2px 7px #000;
-	table-layout: inherit;
+    background-color: #fff;
+    margin: auto;
 }
-
-.listagem_titulo {
-    text-align: center;
-    color: #fff;
-    text-shadow: -1px -1px 1px #000, 1px 1px 1px #ccc;
-}
-
 
 .listagem th {
-    font-size:16px;
+    font-size: 16px;
     color: #fff;
-    padding: 10px;
     text-shadow: 2px 2px 3px #000;
 
-	background: #646f7f;
-	background: -webkit-linear-gradient(#646f7f, #4a5564); /* For Safari 5.1 to 6.0 */
+    background: #646f7f;
+    background: -webkit-linear-gradient(#646f7f, #4a5564); /* For Safari 5.1 to 6.0 */
     background: -o-linear-gradient(#646f7f, #4a5564); /* For Opera 11.1 to 12.0 */
     background: -moz-linear-gradient(#646f7f, #4a5564); /* For Firefox 3.6 to 15 */
-	background: linear-gradient(to bottom, #646f7f, #4a5564);
+    background: linear-gradient(to bottom, #646f7f, #4a5564);
 
-}
-
-.listagem th:first-child{
-    border-top-left-radius: 12px;
-}
-
-.listagem th:last-child{
-	border-top-right-radius: 12px;
-}
-
-.listagem tr:nth-child(odd) td{
-	background-color: #f0f3f5;
 }
 
 .listagem tr td {
-	color:#5f6062;
-	font-size:15px;
-	padding-top: 2px;
-	padding-bottom: 2px;
-	border-bottom: 1px solid #e0e0e0;
+    color: #5f6062;
+    font-size: 15px;
 }
 
-.listagem tr:last-child td:first-child{
-	border-bottom-left-radius: 12px;
-}
-
-.listagem tr:last-child td:last-child{
-	border-bottom-right-radius: 12px;
-}
-
-.listagem button{
-	border-radius: 5px;
+.listagem button {
+    border-radius: 5px;
 }
 
 .listagem button:focus {
-    outline:0;
+    outline: 0;
+}
+
+.sombra {
+    box-shadow: 2px 2px 7px #000;
+}
+
+.listagem-filtro{
+    background: #cccccc;
+}
+
+/*----------------------------- hover ----------------------------------*/
+
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+    background-color: #dddddd;
+}
+
+.linha-entrada {
+    background-color: #88de88;
+}
+
+.linha-entrada:hover td {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.linha-saida {
+    background-color: #efe06d;
+}
+
+.linha-saida:hover td {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+/*----------------------- legenda ----------------------*/
+
+/* basic positioning */
+.legenda {
+    color: #cccccc;
+    list-style: none;
+}
+
+.legenda li {
+    float: left;
+    margin-right: 10px;
+}
+
+.legenda span {
+    border: 1px solid #ccc;
+    float: left;
+    width: 12px;
+    height: 12px;
+    margin: 2px;
+}
+
+/* your colors */
+.legenda .saida {
+    background-color: #efe06d;
+}
+
+.legenda .entrada {
+    background-color: #88de88;
 }

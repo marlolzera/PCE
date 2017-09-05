@@ -1,10 +1,64 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends "interface/geral/base.html" %}
+
+{% block titulo %}
+  Listagem de Fornecedores
+{% endblock %}
+
+{% block corpo %}
+
+  {% include "interface/geral/navigatorTop.html" %}
+
+  <h1 class="titulo1">Fornecedores Cadastrados</h1>
+
+  <div class="container">
+    <div class="table-responsive sombra">
+
+
+      <table class="table listagem bordered table-hover">
+        <thead>
+        <tr>
+          <th>Nome Fantasia</th>
+          <th>Data Cadastrada</th>
+          <th>Última Alteração</th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for fornecedor in lista_fornecedor %}
+
+          <tr>
+            <td>{{ fornecedor.nome_fantasia }}</td>
+            <td>{{ fornecedor.data_cadastro|date:"d/m/Y"}} às {{ fornecedor.data_cadastro|date:"H:i:s"}}</td>
+            <td>{{ fornecedor.data_alteracao|date:"d/m/Y"}} às {{ fornecedor.data_alteracao|date:"H:i:s"}}</td>
+            <td class="text-center">
+
+              <button class="btn btn-primary btn-sm" type="button"
+                      onclick="window.location.href='/atualiza_fornecedor/{{ fornecedor.id }}'">
+                Atualizar
+              </button>
+
+              <button class="btn btn-danger btn-sm" type="button"
+                      onclick="(function() {
+                              if(confirm('Deseja realmente remover o(a) fornecedor(a) {{ fornecedor.nome_fantasia }}?')){
+                              window.location.href='/deleta_fornecedor/{{ fornecedor.id|safe }}/';
+                              }
+                              })()">
+                Deletar
+              </button>
+
+            </td>
+          </tr>
+
+        {% empty %}
+
+          <tr>
+            <td colspan="8">-- Sem dados para visualizar --</td>
+          </tr>
+
+        {% endfor %}
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+{% endblock %}

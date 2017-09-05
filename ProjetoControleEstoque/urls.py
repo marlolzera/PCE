@@ -15,8 +15,15 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from interface.views import *
 
 urlpatterns = [
-    url(r'^',include('principal.urls')),
     url(r'^admin/', admin.site.urls),
+
+    url(r'^login/$', log_in,),
+    url(r'^logout/$', log_out,),
+    url(r'^nova_conta/$', nova_conta,),
+    url(r'^', include('principal.urls')),
+
+    url(r'^$', log_in),
 ]

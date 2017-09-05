@@ -8,45 +8,42 @@
 
   {% include "interface/geral/navigatorTop.html" %}
 
-  <h1 class="titulo1">Produtos Cadastrados</h1>
+  <h1 class="titulo1">Categorias Cadastradas</h1>
 
   <div class="container">
     <div class="table-responsive sombra">
 
 
-      <table class="table listagem bordered">
+      <table class="table listagem bordered table-hover">
         <thead>
         <tr>
           <th>Nome</th>
           <th>Descrição</th>
-          <th>Categoria</th>
-          <th class="text-center">Qtde</th>
-          <th class="text-center">Preço</th>
-          <th class="text-center">Dt.Fabricação</th>
-          <th class="text-center">Dt.Validade</th>
           <th></th>
         </tr>
         </thead>
         <tbody>
-        {% for produto in lista_produto %}
+        {% for categoria in lista_categoria %}
 
           <tr>
-            <td>{{ produto.nome }}</td>
-            <td>{{ produto.descricao }}</td>
-            <td>{{ produto.categoria.descricao }}</td>
-            <td class="text-center">{{ produto.quantidade }}</td>
-            <td class="text-center">{{ produto.preco }}</td>
-
+            <td>{{ categoria.nome }}</td>
+            <td>{{ categoria.descricao }}</td>
             <td class="text-center">
-              {{ produto.data_fabricacao.day }}/
-              {{ produto.data_fabricacao.month }}/
-              {{ produto.data_fabricacao.year }}
-            </td>
 
-            <td class="text-center">{{ produto.data_validade }}</td>
-            <td class="text-center">
-              <button onclick="window.location.href='/atualiza_produto/{{ produto.id }}'">Atualizar</button>
-              <button onclick="window.location.href='/deleta_produto/{{ produto.id }}'">Deletar</button>
+              <button class="btn btn-primary btn-sm" type="button"
+                      onclick="window.location.href='/atualiza_categoria/{{ categoria.id }}'">
+                Atualizar
+              </button>
+
+              <button class="btn btn-danger btn-sm" type="button"
+                      onclick="(function() {
+                              if(confirm('Deseja realmente remover a categoria {{ categoria.nome }}?')){
+                              window.location.href='/deleta_categoria/{{ categoria.id|safe }}/';
+                              }
+                              })()">
+                Deletar
+              </button>
+
             </td>
           </tr>
 

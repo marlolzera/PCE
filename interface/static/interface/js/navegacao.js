@@ -1,4 +1,5 @@
-function chamaUrl(url){
-    //alert(url);
-    //window.location.href = '{% url ' + url + ' %}';
+function overlay() {
+	el = document.getElementById("overlay");
+	el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
 }
+

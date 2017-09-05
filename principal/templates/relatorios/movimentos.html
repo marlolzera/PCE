@@ -1,10 +1,72 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <title>$Title$</title>
+  <title>Relatório de Movimentos</title>
 </head>
 <body>
-$END$
+
+<h3>Relatorio de Movimentos</h3>
+
+<table>
+  <tr>
+    <td>
+      {% if data_inicial and data_final %}
+        <b> Movimentos feitos de </b> {{ data_inicial }} <b> até </b> {{ data_final }}
+      {% endif %}
+      <br/>
+    </td>
+  </tr>
+</table>
+<hr/>
+<div>
+  <table>
+    <thead>
+    <tr>
+      <th>Descrição</th>
+      <th>Produto</th>
+      <th>Categoria</th>
+      <th>Fornecedor</th>
+      <th>Qtde</th>
+      <th>Dt. Movimento</th>
+      <th>Tipo</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for i in lista_movimento %}
+
+      <tr>
+        <td>{{ i.descricao_movimento }}</td>
+        <td>{{ i.nome_produto }}</td>
+        <td>{{ i.nome_categoria }}</td>
+        <td>{{ i.fornecedor_usuario }}</td>
+        <td>{{ i.quantidade_mov }}</td>
+        <td>{{ i.data_mov|date:"d/m/Y" }} às {{ i.data_mov|date:"H:i:s" }}</td>
+        {% if i.tipo_mov == 1 %}
+          <td>Entrada</td>
+        {% elif i.tipo_mov == 2 %}
+          <td>Saída</td>
+        {% else %}
+          <td></td>
+        {% endif %}
+      </tr>
+      <tr>
+        <td colspan="7">
+          <hr/>
+          <br/>
+        </td>
+      </tr>
+
+    {% empty %}
+
+      <tr>
+        <td colspan="7">-- Sem dados para visualizar --</td>
+      </tr>
+
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+
 </body>
 </html>

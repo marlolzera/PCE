@@ -1,10 +1,132 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends "interface/geral/base.html" %}
+
+{% block titulo %}
+  Saída de Produto
+{% endblock %}
+
+{% block corpo %}
+
+  {% include "interface/geral/navigatorTop.html" %}
+
+  <h1 class="titulo1">Saída de Produto</h1>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="col-md-6 col-md-offset-3">
+          <div class="jumbotron">
+
+            <form method="post">
+              {% csrf_token %}
+
+              {% for f in form %}
+
+                <div class="form-group">
+                  <label>{{ f.label }}</label>
+                  <div class="controls">
+                    {{ f }}
+                  </div>
+
+                  {% if f.name == form.quantidade.name %}
+
+                    <div class="form-group">
+                      <label id="id_qtdeproduto" class="label label-info">qtde disponível:</label>
+                    </div>
+
+                  {% endif %}
+
+                </div>
+
+                {% if f.errors %}
+
+                  <div class="alert alert-warning">
+                    {{ f.errors }}
+                  </div>
+
+                {% endif %}
+
+              {% endfor %}
+
+              <button type="submit" class="btn btn-primary">Gravar</button>
+              <a href="/home/" class="btn btn-default">Cancelar</a>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block javascript %}
+
+  <script type="text/javascript" charset="utf-8">
+
+
+    $(document).ready(function () {
+      $("#id_produto").change();
+      var obj = document.getElementById("id_qtdeproduto");
+      obj.innerHTML = '';
+    });
+
+
+    $("#id_categoria").change(function () {
+      var obj = document.getElementById("id_qtdeproduto");
+      obj.innerHTML = '';
+
+      $.ajax({
+        url: '/ajax/get_produto',
+        type: "GET",
+        data: {'option': $('#id_categoria').val()},
+        dataType: "json",
+        success: function (json) {
+
+          var obj = document.getElementById("id_produto");
+          for (var i = 0; i < json.length; i++) {
+            var z = JSON.parse(json[i]);
+            opt = document.createElement("option");
+            opt.value = z["id"];
+            opt.text = z["nome"];
+            obj.appendChild(opt);
+          }
+
+        },
+        beforeSend: function () {
+          $('#id_produto').empty();
+        },
+        error: function (xhr, errmsg, err) {
+          alert(xhr.status + ": " + xhr.responseText);
+        }
+      });
+    });
+
+
+    $("#id_produto").change(function () {
+      $.ajax({
+        url: '/ajax/get_qtdeproduto',
+        type: "GET",
+        data: {'option': $('#id_produto').val()},
+        dataType: "json",
+        success: function (json) {
+
+          var obj = document.getElementById("id_qtdeproduto");
+          var z = JSON.parse(json[0]);
+          obj.innerHTML = 'qtde disponível: ' + z["qtde_produto"];
+
+        },
+        beforeSend: function () {
+          var obj = document.getElementById("id_qtdeproduto");
+          obj.innerHTML = '';
+        },
+        error: function (xhr, errmsg, err) {
+          alert(xhr.status + ": " + xhr.responseText);
+        }
+      });
+    });
+
+    $('select').select2();
+
+  </script>
+
+{% endblock %}

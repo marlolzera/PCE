@@ -1,75 +1,66 @@
-<!DOCTYPE html>
+{% extends "interface/geral/base.html" %}
 
-{% load static %}
+{% block titulo %}
+  Listagem de Produtos
+{% endblock %}
 
-<link rel="stylesheet" type="text/css" href="{% static 'principal/css/geral.css' %}" />
-<link rel="stylesheet" type="text/css" href="{% static 'principal/css/fundo.css' %}" />
-<link rel="stylesheet" type="text/css" href="{% static 'principal/css/toolbar.css' %}" />
-<link rel="stylesheet" type="text/css" href="{% static 'principal/css/listagem.css' %}" />
+{% block corpo %}
 
-<script type="text/javascript" src="{% static 'principal/js/navegacao.js' %}" ></script>
+  {% include "interface/geral/navigatorTop.html" %}
 
-<html lang="en">
+  <h1 class="titulo1">Produtos Cadastrados</h1>
 
-<head>
-    <meta charset="UTF-8">
-    <title>Listagem de Produtos</title>
-</head>
-<body>
+  <div class="container">
+    <div class="table-responsive sombra">
+      <table class="table listagem bordered table-hover">
+        <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Descrição</th>
+          <th>Categoria</th>
+          <th class="text-center">Qtde</th>
+          <th class="text-center">Preço Uni.</th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for produto in lista_produto %}
 
-<table class="navigationBar">
-    <tr>
-        <td width="60px" onClick="window.location.href='{% url 'home' %}'">Home</td>
-        <td width="80px" onClick="window.location.href='{% url 'lista_produto' %}'" class="selecionado">Listagem</td>
-        <td width="50px" onClick="window.location.href='{% url 'novo_produto' %}'">Novo</td>
-        <td width="80px" onClick="window.location.href='{% url 'nova_categoria' %}'">Categoria</td>
-        <td></td>
-    </tr>
-</table>
+          <tr>
+            <td>{{ produto.nome }}</td>
+            <td>{{ produto.descricao }}</td>
+            <td>{{ produto.categoria.nome }}</td>
+            <td class="text-center">{{ produto.quantidade }}</td>
+            <td class="text-center">{{ produto.preco_unitario|floatformat:2 }}</td>
+            <td class="text-center">
 
+              <button class="btn btn-primary btn-sm" type="button"
+                      onclick="window.location.href='/atualiza_produto/{{ produto.id }}'">
+                Atualizar
+              </button>
 
-<h1 class="titulo1">Produtos Cadastrados</h1>
+              <button class="btn btn-danger btn-sm" type="button"
+                      onclick="(function() {
+                              if(confirm('Deseja realmente remover o produto {{ produto.nome }}?')){
+                              window.location.href='/deleta_produto/{{ produto.id|safe }}/';
+                              }
+                              })()">
+                Deletar
+              </button>
 
-<table width="1110px" class="listagem">
+            </td>
+          </tr>
 
-    <tr>
-        <th width="150px">Nome</th>
-        <th width="300px">Descrição</th>
-        <th width="150px">Categoria</th>
-        <th width="40px">Qtde</th>
-        <th width="70px">Preço</th>
-        <th width="90px">Dt.Fabricação</th>
-        <th width="90px">Dt.Validade</th>
-        <th width="220px"></th>
-    </tr>
+        {% empty %}
 
-{% for produto in lista_produto %}
+          <tr>
+            <td colspan="8">-- Sem dados para visualizar --</td>
+          </tr>
 
-    <tr>
-        <td>{{produto.nome}}</td>
-        <td>{{produto.descricao}}</td>
-        <td>asdsadasasd</td>
-        <td>{{produto.quantidade}}</td>
-        <td>{{produto.preco}}</td>
+        {% endfor %}
+        </tbody>
+      </table>
 
-        <td>
-            {{ produto.data_fabricacao.day }}/
-            {{ produto.data_fabricacao.month }}/
-            {{ produto.data_fabricacao.year }}
-        </td>
-
-
-        <td>{{produto.data_validade}}</td>
-        <td align="center">
-            <button onclick="window.location.href='{% url 'atualizaProduto' produto.id %}'">Atualizar</button>
-            <button onclick="window.location.href='{% url 'deletaProduto' produto.id %}'">Deletar</button>
-        </td>
-    </tr>
-
-
-{% endfor %}
-
-</table>
-
-</body>
-</html>
+    </div>
+  </div>
+{% endblock %}

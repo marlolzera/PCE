@@ -1,10 +1,59 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends "interface/geral/base.html" %}
+
+{% block titulo %}
+  Cadastro da Conta
+{% endblock %}
+
+{% block corpo %}
+
+  <h1 class="titulo1">Cadastro de Conta</h1>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="col-md-6 col-md-offset-3">
+          <div class="jumbotron">
+
+            <form class="form-login" method="post">
+              {% csrf_token %}
+
+              <div class="form-group">
+                <label>{{ usuario_form.username.label }}:</label>
+                <div class="controls">
+                  {{ usuario_form.username }}
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>{{ usuario_form.email.label }}:</label>
+                <div class="controls">
+                  {{ usuario_form.email }}
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>{{ usuario_form.password.label }}:</label>
+                <div class="controls">
+                  {{ usuario_form.password }}
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>{{ usuarioinfo_form.endereco.label }}:</label>
+                <div class="controls">
+                  {{ usuarioinfo_form.endereco }}
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-primary">Salvar</button>
+              <a href="javascript:void(0)" onClick="history.go(-1); return false;"
+                 class="btn btn-default">Cancelar</a>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

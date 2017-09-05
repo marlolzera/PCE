@@ -1,10 +1,145 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends "interface/geral/base.html" %}
+
+{% block titulo %}
+  Listagem de Movimento
+{% endblock %}
+
+{% block corpo %}
+
+  {% include "interface/geral/navigatorTop.html" %}
+
+  <h1 class="titulo1">Listagem de Movimentos</h1>
+
+  <div class="container">
+
+    <div class="listagem-filtro">
+      <form method="get" name="filtro">
+        <div class="form-inline margin-bottom-10">
+          <div class="form-group">
+            <span>Movimentos de</span>
+            <input type="date" class="form-control text-center" name="data_inicial"
+                   value="{{ data_inicial|date:"Y-m-d" }}">
+          </div>
+          <div class="form-group">
+            <span>até</span>
+            <input type="date" class="form-control text-center" name="data_final"
+                   value="{{ data_final|date:"Y-m-d" }}">
+          </div>
+          <div class="form-group">
+            <label for="exampleInputName2">Ordenação:</label>
+            <select class="form-control select2-drop" name="ordenacao" onchange="$('form[name=filtro]').submit()">
+
+              <option value="-data_cadastro" {% if ordenacao == '-data_cadastro' %}selected{% endif %}>
+                Mais novo
+              </option>
+
+              <option value="data_cadastro" {% if ordenacao == 'data_cadastro' %}selected{% endif %}>
+                Mais antigo
+              </option>
+
+            </select>
+          </div>
+
+          <a href="{{ request.path }}" class="btn btn-warning">
+            <i class="fa fa-close" aria-hidden="true"></i>
+            Limpar
+          </a>
+          <button type="submit" class="btn btn-primary">
+            <i class="fa fa-filter" aria-hidden="true"></i>
+            Filtrar
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div class="table sombra">
+
+      <table class="table listagem bordered table">
+        <thead>
+        <tr>
+          <th>Descrição</th>
+          <th>Produto</th>
+          <th>Categoria</th>
+          <th>Fornecedor/Usuário</th>
+          <th>Qtde</th>
+          <th>Dt. Movimento</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for i in objs %}
+
+          {% if i.tipo_mov == 1 %}
+            <tr class="linha-entrada">
+              {% elif i.tipo_mov == 2 %}
+            <tr class="linha-saida">
+              {% else %}
+            <tr>
+          {% endif %}
+
+        <td>{{ i.descricao_movimento }}</td>
+        <td>{{ i.nome_produto }}</td>
+        <td>{{ i.nome_categoria }}</td>
+        <td>{{ i.fornecedor_usuario }}</td>
+        <td>{{ i.quantidade_mov }}</td>
+        <td>{{ i.data_mov|date:"d/m/Y" }} às {{ i.data_mov|date:"H:i:s" }}</td>
+
+        </tr>
+
+        {% empty %}
+
+          <tr>
+            <td colspan="6">-- Sem dados para visualizar --</td>
+          </tr>
+
+        {% endfor %}
+        </tbody>
+      </table>
+
+      <div class="row">
+        <div class="col-md-12">
+
+          <div class="col-md-3 text-left">
+            <ul class="legenda">
+              <li><span class="entrada"></span> Entrada</li>
+              <li><span class="saida"></span> Saída</li>
+            </ul>
+          </div>
+
+          <div class="col-md-6 text-center">
+
+            {#          <hr>#}
+            {% if objs.has_previous %}
+              <a href="?{{ str_busca }}&page={{ objs.previous_page_number }}" type="button"
+                 class="btn btn-primary btn-sm">&laquo;</a>
+            {% endif %}
+            {% for num in objs.paginator.page_range %}
+              {% ifequal num objs.number %}
+                <a href="#" type="button" class="btn btn-info btn-sm">{{ num }}</a>
+              {% else %}
+                <a href="?{{ str_busca }}&page={{ num }}" type="button" class="btn btn-primary btn-sm">{{ num }}</a>
+              {% endifequal %}
+            {% endfor %}
+            {% if objs.has_next %}
+              <a href="?{{ str_busca }}&page={{ objs.next_page_number }}" type="button" class="btn btn-primary btn-sm">&raquo;</a>
+            {% endif %}
+          </div><!-- .widget -->
+
+          <div class="col-md-3 text-right">
+            <a href="?export=pdf{{ query_string }}" class="btn btn-primary">
+              <i class="fa fa-download"></i> Exportar PDF
+            </a>
+            <a href="?export=xls{{ query_string }}" class="btn btn-success">
+              <i class="fa fa-file-excel-o"></i> Exportar Excel
+            </a>
+          </div>
+
+        </div><!-- END column -->
+
+      </div>
+
+    </div>
+
+
+  </div>
+
+{% endblock %}

@@ -1,1 +1,5 @@
-reportlab
+html5lib==1.0b10
+httplib2==0.10.3
+reportlab==3.4.0
+xhtml2pdf==0.2b1
+openpyxl==2.4.8
