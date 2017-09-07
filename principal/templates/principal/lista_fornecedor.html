@@ -1,12 +1,10 @@
-{% extends "interface/geral/base.html" %}
+{% extends "interface/geral/principal.html" %}
 
 {% block titulo %}
   Listagem de Fornecedores
 {% endblock %}
 
 {% block corpo %}
-
-  {% include "interface/geral/navigatorTop.html" %}
 
   <h1 class="titulo1">Fornecedores Cadastrados</h1>
 
@@ -52,7 +50,7 @@
         {% empty %}
 
           <tr>
-            <td colspan="8">-- Sem dados para visualizar --</td>
+            <td colspan="4" align="center">-- Sem dados para visualizar --</td>
           </tr>
 
         {% endfor %}

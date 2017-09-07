@@ -8,6 +8,7 @@ urlpatterns = [
     url(r'^lista_produto/$', lista_produto),
     url(r'^atualiza_produto/(?P<id>\d+)/$', atualiza_produto),
     url(r'^deleta_produto/(?P<id>\d+)/$', deleta_produto),
+    url(r'^novo_produto_dialog/$', novo_produto_dialog),
 
     url(r'^nova_categoria/$', nova_categoria),
     url(r'^lista_categoria/$', lista_categoria),
@@ -22,9 +23,11 @@ urlpatterns = [
     url(r'^entrada_produto/$', entrada_produto),
     url(r'^saida_produto/$', saida_produto),
     url(r'^lista_movimento/$', lista_movimento),
+    url(r'^lista_lote/$', lista_lote),
 
     url(r'^ajax/get_produto/$', get_produto),
-    url(r'^ajax/get_qtdeproduto/$', get_qtdeproduto),
+    url(r'^ajax/get_lote/$', get_lote),
+    url(r'^ajax/get_qtdelote/$', get_qtdelote),
 
     url(r'^home/$', home),
 ]

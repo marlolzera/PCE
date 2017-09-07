@@ -24,9 +24,11 @@
     <thead>
     <tr>
       <th>Descrição</th>
+      <th>Lote</th>
       <th>Produto</th>
       <th>Categoria</th>
       <th>Fornecedor</th>
+      <th>Usuário</th>
       <th>Qtde</th>
       <th>Dt. Movimento</th>
       <th>Tipo</th>
@@ -36,10 +38,12 @@
     {% for i in lista_movimento %}
 
       <tr>
-        <td>{{ i.descricao_movimento }}</td>
+        <td>{{ i.descricao_mov }}</td>
+        <td>{{ i.lote_mov }}</td>
         <td>{{ i.nome_produto }}</td>
         <td>{{ i.nome_categoria }}</td>
-        <td>{{ i.fornecedor_usuario }}</td>
+        <td>{{ i.fornecedor_mov }}</td>
+        <td>{{ i.usuario_mov }}</td>
         <td>{{ i.quantidade_mov }}</td>
         <td>{{ i.data_mov|date:"d/m/Y" }} às {{ i.data_mov|date:"H:i:s" }}</td>
         {% if i.tipo_mov == 1 %}
@@ -51,7 +55,7 @@
         {% endif %}
       </tr>
       <tr>
-        <td colspan="7">
+        <td colspan="9">
           <hr/>
           <br/>
         </td>
@@ -60,7 +64,7 @@
     {% empty %}
 
       <tr>
-        <td colspan="7">-- Sem dados para visualizar --</td>
+        <td colspan="9">-- Sem dados para visualizar --</td>
       </tr>
 
     {% endfor %}

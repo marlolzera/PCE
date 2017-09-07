@@ -1,10 +1,29 @@
 <!DOCTYPE html>
+
+{% include "interface/geral/scripts.html" %}
+
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <title>$Title$</title>
+  <title>
+    {% block titulo %}
+
+    {% endblock %}
+  </title>
 </head>
 <body>
-$END$
+
+{% include "interface/geral/navigatorTop.html" %}
+
+{% block corpo %}
+
+{% endblock %}
+
+
+{% block javascript %}
+
+{% endblock %}
+
 </body>
 </html>

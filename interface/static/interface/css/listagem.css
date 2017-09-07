@@ -33,8 +33,13 @@
     box-shadow: 2px 2px 7px #000;
 }
 
-.listagem-filtro{
+.listagem-filtro {
     background: #cccccc;
+    padding: 10px;
+}
+
+.listagem-footer {
+    padding: 10px;
 }
 
 /*----------------------------- hover ----------------------------------*/

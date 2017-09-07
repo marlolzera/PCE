@@ -1,12 +1,10 @@
-{% extends "interface/geral/base.html" %}
+{% extends "interface/geral/principal.html" %}
 
 {% block titulo %}
   Saída de Produto
 {% endblock %}
 
 {% block corpo %}
-
-  {% include "interface/geral/navigatorTop.html" %}
 
   <h1 class="titulo1">Saída de Produto</h1>
 
@@ -30,7 +28,7 @@
                   {% if f.name == form.quantidade.name %}
 
                     <div class="form-group">
-                      <label id="id_qtdeproduto" class="label label-info">qtde disponível:</label>
+                      <label id="id_qtdelote" class="label label-info">qtde disponível:</label>
                     </div>
 
                   {% endif %}
@@ -63,17 +61,20 @@
 
   <script type="text/javascript" charset="utf-8">
 
+    function limpaQtdeLote() {
+      var obj = document.getElementById("id_qtdelote");
+      obj.innerHTML = '';
+    }
 
     $(document).ready(function () {
-      $("#id_produto").change();
-      var obj = document.getElementById("id_qtdeproduto");
-      obj.innerHTML = '';
+      limpaQtdeLote();
     });
+
+    {#    //////////////////////////////////// OnChange CATEGORIA ////////////////////////////////////#}
 
 
     $("#id_categoria").change(function () {
-      var obj = document.getElementById("id_qtdeproduto");
-      obj.innerHTML = '';
+      limpaQtdeLote();
 
       $.ajax({
         url: '/ajax/get_produto',
@@ -94,6 +95,8 @@
         },
         beforeSend: function () {
           $('#id_produto').empty();
+          $('#id_entrada').empty();
+          limpaQtdeLote();
         },
         error: function (xhr, errmsg, err) {
           alert(xhr.status + ": " + xhr.responseText);
@@ -101,23 +104,54 @@
       });
     });
 
+    {#    //////////////////////////////////// OnChange PRODUTO ////////////////////////////////////#}
+
 
     $("#id_produto").change(function () {
       $.ajax({
-        url: '/ajax/get_qtdeproduto',
+        url: '/ajax/get_lote',
         type: "GET",
         data: {'option': $('#id_produto').val()},
         dataType: "json",
         success: function (json) {
 
-          var obj = document.getElementById("id_qtdeproduto");
-          var z = JSON.parse(json[0]);
-          obj.innerHTML = 'qtde disponível: ' + z["qtde_produto"];
+          var obj = document.getElementById("id_entrada");
+          for (var i = 0; i < json.length; i++) {
+            var z = JSON.parse(json[i]);
+            opt = document.createElement("option");
+            opt.value = z["id"];
+            opt.text = z["nome"];
+            obj.appendChild(opt);
+          }
 
         },
         beforeSend: function () {
-          var obj = document.getElementById("id_qtdeproduto");
-          obj.innerHTML = '';
+          $('#id_entrada').empty();
+          limpaQtdeLote();
+        },
+        error: function (xhr, errmsg, err) {
+          alert(xhr.status + ": " + xhr.responseText);
+        }
+      });
+    });
+
+    {#    //////////////////////////////////// OnChange LOTE ////////////////////////////////////#}
+
+    $("#id_entrada").change(function () {
+      $.ajax({
+        url: '/ajax/get_qtdelote',
+        type: "GET",
+        data: {'option': $('#id_entrada').val()},
+        dataType: "json",
+        success: function (json) {
+
+          var obj = document.getElementById("id_qtdelote");
+          var z = JSON.parse(json[0]);
+          obj.innerHTML = 'qtde disponível: ' + z["qtde_lote"];
+
+        },
+        beforeSend: function () {
+          limpaQtdeLote()
         },
         error: function (xhr, errmsg, err) {
           alert(xhr.status + ": " + xhr.responseText);

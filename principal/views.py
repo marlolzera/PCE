@@ -33,13 +33,13 @@ def home(request):
     }
 
     queryset = EntradaProduto.objects.annotate(
-        descricao_movimento=F('descricao'),
+        lote_movimento=F('lote'),
         nome_produto=F('produto__nome'),
         nome_categoria=F('produto__categoria__nome'),
         fornecedor_usuario=F('fornecedor__nome_fantasia'),
         quantidade_mov=F('quantidade'),
         data_mov=F('data_cadastro')).extra(select={'tipo_mov': 1}).values(
-        'descricao_movimento',
+        'lote_movimento',
         'nome_produto',
         'nome_categoria',
         'fornecedor_usuario',
@@ -138,6 +138,11 @@ def novo_produto(request):
 
 
 @login_required(login_url='/login')
+def novo_produto_dialog(request):
+    return render(request, 'principal/novo_produto_dialog.html')
+
+
+@login_required(login_url='/login')
 def lista_produto(request):
     lista_produto = Produto.objects.select_related().order_by('-id')
 
@@ -221,10 +226,40 @@ def entrada_produto(request):
 
     if request.method == 'POST':
         if form.is_valid():
-            form.save()
-            return redirect('/lista_produto/')
+            entrada_produto = form.save(commit=False)
+            entrada_produto.quantidade = entrada_produto.quantidade_inicial
+            entrada_produto.usuario = request.user
+            entrada_produto.save()
+
+            return redirect('/lista_lote/')
 
     return render(request, 'principal/entrada_produto.html', {'form': form})
+
+
+@login_required(login_url='/login')
+def lista_lote(request):
+    # lista_lote = EntradaProduto.objects.select_related().order_by('-id')
+
+    lista_lote = EntradaProduto.objects.annotate(
+        nome_produto=F('produto__nome'),
+        nome_categoria=F('produto__categoria__nome'),
+        numero_lote=F('lote'),
+        qtde_inicial=F('quantidade_inicial'),
+        qtde_atual=F('quantidade'),
+        dt_cadastro=F('data_cadastro'),
+        dt_fabricacao=F('data_fabricacao'),
+        dt_validade=F('data_validade')
+    ).values(
+        'nome_produto',
+        'nome_categoria',
+        'numero_lote',
+        'qtde_inicial',
+        'qtde_atual',
+        'dt_cadastro',
+        'dt_fabricacao',
+        'dt_validade').order_by('produto__nome')
+
+    return render(request, 'principal/lista_lote.html', locals())
 
 
 # //////////////////////////////////// Saída //////////////////////////////////////
@@ -235,7 +270,8 @@ def saida_produto(request):
     inicial = {}
     if request.POST:
         inicial.update({
-            'categoria': request.POST.get("categoria")
+            'categoria': request.POST.get("categoria"),
+            'produto': request.POST.get("produto")
         })
 
     form = SaidaProdutoForm(request.POST or None, initial=inicial)
@@ -246,7 +282,7 @@ def saida_produto(request):
             saida_produto.usuario = request.user
             saida_produto.save()
 
-            return redirect('/lista_produto/')
+            return redirect('/lista_movimento/')
 
     return render(request, 'principal/saida_produto.html', {'form': form})
 
@@ -277,7 +313,7 @@ def get_produto(request):
 
 
 @login_required(login_url='/login')
-def get_qtdeproduto(request):
+def get_lote(request):
     if request.method != 'GET' or request.is_ajax() is False:
         pass
     else:
@@ -289,13 +325,38 @@ def get_qtdeproduto(request):
         out = []
 
         try:
-            produto = Produto.objects.get(id=produto_id)
-        except Produto.DoesNotExist:
-            produto = None
+            lotes = EntradaProduto.objects.filter(produto_id=produto_id).order_by('data_validade')
+        except EntradaProduto.DoesNotExist:
+            lotes = None
 
-        if produto:
-            qtde_produto = produto.quantidade
-            out.append(u'{"qtde_produto":%s}' % qtde_produto)
+        if lotes:
+            out.append(u'{"id":0, "nome":"--- Selecione ---"}')
+            for l in lotes:
+                out.append(u'{"id":%s, "nome":"%s"}' % (l.id, l.lote))
+
+        return HttpResponse(json.dumps(out), content_type='application/javascript')
+
+
+@login_required(login_url='/login')
+def get_qtdelote(request):
+    if request.method != 'GET' or request.is_ajax() is False:
+        pass
+    else:
+        entrada_id = request.GET.get('option', None)
+
+        if entrada_id == '':
+            entrada_id = '0'
+
+        out = []
+
+        try:
+            lote = EntradaProduto.objects.get(id=entrada_id)
+        except EntradaProduto.DoesNotExist:
+            lote = None
+
+        if lote:
+            qtde_lote = lote.quantidade
+            out.append(u'{"qtde_lote":%s}' % qtde_lote)
 
         return HttpResponse(json.dumps(out), content_type='application/javascript')
 
@@ -325,31 +386,39 @@ def lista_movimento(request):
         str_busca = ''
 
     lista_mov_entrada = EntradaProduto.objects.annotate(
-        descricao_movimento=F('descricao'),
+        descricao_mov=F('descricao'),
+        lote_mov=F('lote'),
         nome_produto=F('produto__nome'),
         nome_categoria=F('produto__categoria__nome'),
-        fornecedor_usuario=F('fornecedor__nome_fantasia'),
-        quantidade_mov=F('quantidade'),
+        fornecedor_mov=F('fornecedor__nome_fantasia'),
+        usuario_mov=F('usuario__username'),
+        quantidade_mov=F('quantidade_inicial'),
         data_mov=F('data_cadastro')).extra(select={'tipo_mov': 1}).values(
-        'descricao_movimento',
+        'descricao_mov',
+        'lote_mov',
         'nome_produto',
         'nome_categoria',
-        'fornecedor_usuario',
+        'fornecedor_mov',
+        'usuario_mov',
         'quantidade_mov',
         'data_mov',
         'tipo_mov').filter(**parametros_filtro)
 
     lista_mov_saida = SaidaProduto.objects.annotate(
-        descricao_movimento=F('descricao'),
-        nome_produto=F('produto__nome'),
-        nome_categoria=F('produto__categoria__nome'),
-        fornecedor_usuario=F('usuario__username'),
+        descricao_mov=F('descricao'),
+        lote_mov=F('entrada__lote'),
+        nome_produto=F('entrada__produto__nome'),
+        nome_categoria=F('entrada__produto__categoria__nome'),
+        fornecedor_mov=F('entrada__fornecedor__nome_fantasia'),
+        usuario_mov=F('usuario__username'),
         quantidade_mov=F('quantidade'),
         data_mov=F('data_cadastro')).extra(select={'tipo_mov': 2}).values(
-        'descricao_movimento',
+        'descricao_mov',
+        'lote_mov',
         'nome_produto',
         'nome_categoria',
-        'fornecedor_usuario',
+        'fornecedor_mov',
+        'usuario_mov',
         'quantidade_mov',
         'data_mov',
         'tipo_mov').filter(**parametros_filtro)
@@ -368,7 +437,7 @@ def lista_movimento(request):
 
     # -------------------- PAGINATOR ------------------------
 
-    paginator = Paginator(lista_movimento, 10)
+    paginator = Paginator(lista_movimento, 9)
     page = request.GET.get('page')
     try:
         objs = paginator.page(page)
@@ -414,9 +483,11 @@ def lista_movimento(request):
         c.value = titulo
         columns = [
             (u"Descrição", 70),
+            (u"Lote", 70),
             (u"Produto", 70),
             (u"Categoria", 70),
             (u"Fornecedor", 70),
+            (u"Usuário", 70),
             (u"Qtde", 70),
             (u"Dt.Movimento", 70),
             (u"Tipo", 70),
@@ -435,10 +506,12 @@ def lista_movimento(request):
                 tipo_movimento = 'Saída'
 
             row = [
-                obj.get('descricao_movimento'),
+                obj.get('descricao_mov'),
+                obj.get('lote_mov'),
                 obj.get('nome_produto'),
                 obj.get('nome_categoria'),
-                obj.get('fornecedor_usuario'),
+                obj.get('fornecedor_mov'),
+                obj.get('usuario_mov'),
                 obj.get('quantidade_mov'),
                 "{0:%d/%m/%Y} ás {0:%H:%M:%S}".format(obj.get('data_mov')),
                 tipo_movimento

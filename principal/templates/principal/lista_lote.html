@@ -1,10 +1,52 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends "interface/geral/principal.html" %}
+
+{% block titulo %}
+  Listagem de Lotes
+{% endblock %}
+
+{% block corpo %}
+
+  <h1 class="titulo1">Entradas de Lotes</h1>
+
+  <div class="container">
+    <div class="table-responsive sombra">
+      <table class="table listagem bordered table-hover">
+        <thead>
+        <tr>
+          <th>Produto</th>
+          <th>Categoria</th>
+          <th>Lote</th>
+          <th class="text-center">Qtde Inicial</th>
+          <th class="text-center">Qtde Atual</th>
+          <th class="text-center">Cadastrado</th>
+          <th class="text-center">Dt.Fabricação</th>
+          <th class="text-center">Dt.Validade</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for lote in lista_lote %}
+
+          <tr>
+            <td>{{ lote.nome_produto }}</td>
+            <td>{{ lote.nome_categoria }}</td>
+            <td>{{ lote.numero_lote }}</td>
+            <td class="text-center">{{ lote.qtde_inicial }}</td>
+            <td class="text-center">{{ lote.qtde_atual }}</td>
+            <td class="text-center">{{ lote.dt_cadastro|date:"d/m/Y" }} às {{ lote.dt_cadastro|date:"H:i:s" }}</td>
+            <td class="text-center">{{ lote.dt_fabricacao|date:"d/m/Y" }}</td>
+            <td class="text-center">{{ lote.dt_validade|date:"d/m/Y" }}</td>
+          </tr>
+
+        {% empty %}
+
+          <tr>
+            <td colspan="8" align="center">-- Sem dados para visualizar --</td>
+          </tr>
+
+        {% endfor %}
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+{% endblock %}

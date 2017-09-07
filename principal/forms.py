@@ -63,10 +63,13 @@ class EntradaProdutoForm(ModelForm):
         model = EntradaProduto
         fields = [
             'descricao',
+            'lote',
             'fornecedor',
             'categoria',
             'produto',
-            'quantidade'
+            'quantidade_inicial',
+            'data_fabricacao',
+            'data_validade'
         ]
 
     fornecedor = ModelChoiceField(queryset=Fornecedor.objects.all(), label=u'Fornecedor',
@@ -91,8 +94,13 @@ class SaidaProdutoForm(ModelForm):
             'descricao',
             'categoria',
             'produto',
+            'entrada',
             'quantidade'
         ]
+
+    categoria = ModelChoiceField(queryset=Categoria.objects.all(), label=u'Categoria', empty_label="--- Selecione ---")
+    produto = ModelChoiceField(queryset=Produto.objects.none(), label=u'Produto', empty_label=None)
+    entrada = ModelChoiceField(queryset=EntradaProduto.objects.none(), label=u'Lote', empty_label=None)
 
     def __init__(self, *args, **kwargs):
         super(SaidaProdutoForm, self).__init__(*args, **kwargs)
@@ -103,11 +111,15 @@ class SaidaProdutoForm(ModelForm):
             produto = self.fields['produto']
             produto.queryset = Produto.objects.filter(categoria_id=self.initial.get("categoria"))
 
+        if self.initial.get("produto"):
+            entrada = self.fields['entrada']
+            entrada.queryset = EntradaProduto.objects.filter(produto_id=self.initial.get("produto"))
+
     def clean_quantidade(self):
-        produto = self.cleaned_data['produto']
+        entrada = self.cleaned_data['entrada']
         qtde = self.cleaned_data['quantidade']
 
-        if qtde > produto.quantidade:
+        if qtde > entrada.quantidade:
             raise ValidationError(u"Quantidade indisponível!")
         else:
             return qtde

@@ -25,8 +25,6 @@ class Produto(models.Model):
                                      editable=False, verbose_name='Quantidade')
     preco_unitario = models.FloatField(null=True, blank=True, verbose_name='Preço Unitário',
                                        validators=[MinValueValidator(0)])
-    # data_fabricacao = models.DateField(null=True, blank=True, verbose_name='Data de Fabricação')
-    # data_validade = models.DateField(null=True, blank=True, verbose_name='Data de Validade')
     data_cadastro = DateTimeField(verbose_name=u'Data Cadastro', auto_now_add=True, editable=False)
     data_alteracao = DateTimeField(verbose_name=u'Data Alteração', auto_now=True, editable=False)
     categoria = models.ForeignKey(Categoria, verbose_name='Categoria')
@@ -46,21 +44,25 @@ class Fornecedor(models.Model):
 
 class EntradaProduto(models.Model):
     descricao = models.CharField(max_length=50, null=False, blank=False, verbose_name='Descrição')
+    lote = models.CharField(max_length=50, null=False, blank=False, verbose_name='Lote')
     fornecedor = models.ForeignKey(Fornecedor, verbose_name='Fornecedor')
     produto = models.ForeignKey(Produto, verbose_name='Produto')
+    quantidade_inicial = models.IntegerField(null=False, blank=False, validators=[MinValueValidator(1)],
+                                             verbose_name='Qtde. Inicial')
     quantidade = models.IntegerField(null=False, blank=False, validators=[MinValueValidator(1)],
                                      verbose_name='Quantidade')
     data_cadastro = DateTimeField(verbose_name=u'Data Entrada', auto_now_add=True, editable=False)
+    data_fabricacao = models.DateField(null=True, blank=True, verbose_name='Data de Fabricação')
+    data_validade = models.DateField(null=True, blank=True, verbose_name='Data de Validade')
+    usuario = models.ForeignKey(User, verbose_name='Usuário', editable=False)
 
     def __str__(self):
-        return self.descricao
+        return self.lote
 
 
 class SaidaProduto(models.Model):
     descricao = models.CharField(max_length=50, null=False, blank=False, verbose_name='Descrição')
-
-    categoria = models.ForeignKey(Categoria, verbose_name='Categoria')
-    produto = models.ForeignKey(Produto, verbose_name='Produto')
+    entrada = models.ForeignKey(EntradaProduto, verbose_name='Lote')
     quantidade = models.IntegerField(null=False, blank=False, validators=[MinValueValidator(1)],
                                      verbose_name='Quantidade')
     data_cadastro = DateTimeField(verbose_name=u'Data Saída', auto_now_add=True, editable=False)
