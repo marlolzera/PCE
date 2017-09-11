@@ -8,40 +8,35 @@
 
   <h1 class="titulo1">Cadastro de Categoria</h1>
 
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="col-md-6 col-md-offset-3">
-          <div class="jumbotron">
+  <div class="d-flex justify-content-center">
+    <div class="col-md-5">
+      <div class="jumbotron">
+        <form method="post">
+          {% csrf_token %}
 
-            <form method="post">
-              {% csrf_token %}
+          {% for f in form %}
 
-              {% for f in form %}
+            <div class="form-group">
+              <label>{{ f.label }}</label>
+              <div class="controls">
+                {{ f }}
+              </div>
+            </div>
 
-                <div class="form-group">
-                  <label>{{ f.label }}</label>
-                  <div class="controls">
-                    {{ f }}
-                  </div>
-                </div>
+            {% if f.errors %}
 
-                {% if f.errors %}
+              <div class="alert alert-warning">
+                {{ f.errors }}
+              </div>
 
-                  <div class="alert alert-warning">
-                    {{ f.errors }}
-                  </div>
+            {% endif %}
 
-                {% endif %}
+          {% endfor %}
 
-              {% endfor %}
+          <button type="submit" class="btn btn-primary">Gravar</button>
+          <a href="/lista_categoria/" class="btn btn-default">Cancelar</a>
 
-              <button type="submit" class="btn btn-primary">Gravar</button>
-              <a href="/lista_categoria/" class="btn btn-default">Cancelar</a>
-
-            </form>
-          </div>
-        </div>
+        </form>
       </div>
     </div>
   </div>

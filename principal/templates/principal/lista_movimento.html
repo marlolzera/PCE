@@ -97,51 +97,45 @@
         </tbody>
       </table>
 
-      <div class="row">
-        <div class="col-md-12 listagem-footer">
+      {#    /////////////////////////////////// FOOTER ///////////////////////////////////////#}
 
-          <div class="col-md-3 text-left">
-            <ul class="legenda">
-              <li><span class="entrada"></span> Entrada</li>
-              <li><span class="saida"></span> Saída</li>
-            </ul>
-          </div>
+      <div class="row d-flex align-items-center h-100">
 
-          <div class="col-md-6 text-center">
-
-            {#          <hr>#}
-            {% if objs.has_previous %}
-              <a href="?{{ str_busca }}&page={{ objs.previous_page_number }}" type="button"
-                 class="btn btn-primary btn-sm">&laquo;</a>
-            {% endif %}
-            {% for num in objs.paginator.page_range %}
-              {% ifequal num objs.number %}
-                <a href="#" type="button" class="btn btn-info btn-sm">{{ num }}</a>
-              {% else %}
-                <a href="?{{ str_busca }}&page={{ num }}" type="button" class="btn btn-primary btn-sm">{{ num }}</a>
-              {% endifequal %}
-            {% endfor %}
-            {% if objs.has_next %}
-              <a href="?{{ str_busca }}&page={{ objs.next_page_number }}" type="button" class="btn btn-primary btn-sm">&raquo;</a>
-            {% endif %}
-          </div><!-- .widget -->
-
-          <div class="col-md-3 text-right">
-            <a href="?export=pdf{{ query_string }}" class="btn btn-primary">
-              <i class="fa fa-download"></i> Exportar PDF
-            </a>
-            <a href="?export=xls{{ query_string }}" class="btn btn-success">
-              <i class="fa fa-file-excel-o"></i> Exportar Excel
-            </a>
-          </div>
-
-        </div><!-- END column -->
-
+{#------------------------- legenda ----------------------------#}
+        <div class="col-md-4 text-left">
+          <ul class="legenda">
+            <li><span class="entrada"></span> Entrada</li>
+            <li><span class="saida"></span> Saída</li>
+          </ul>
+        </div>
+{#--------------------------- paginação ------------------------#}
+        <div class="col-md-4 text-center">
+          {% if objs.has_previous %}
+            <a href="?{{ str_busca }}&page={{ objs.previous_page_number }}" type="button"
+               class="btn btn-primary btn-sm">&laquo;</a>
+          {% endif %}
+          {% for num in objs.paginator.page_range %}
+            {% ifequal num objs.number %}
+              <a href="#" type="button" class="btn btn-info btn-sm">{{ num }}</a>
+            {% else %}
+              <a href="?{{ str_busca }}&page={{ num }}" type="button" class="btn btn-primary btn-sm">{{ num }}</a>
+            {% endifequal %}
+          {% endfor %}
+          {% if objs.has_next %}
+            <a href="?{{ str_busca }}&page={{ objs.next_page_number }}" type="button" class="btn btn-primary btn-sm">&raquo;</a>
+          {% endif %}
+        </div>
+{#------------------------ botões pdf excel -----------------------------------#}
+        <div class="col-md-4 text-right">
+          <a href="?export=pdf{{ query_string }}" class="btn btn-primary">
+            <i class="fa fa-download"></i> Exportar PDF
+          </a>
+          <a href="?export=xls{{ query_string }}" class="btn btn-success">
+            <i class="fa fa-file-excel-o"></i> Exportar Excel
+          </a>
+        </div>
       </div>
-
     </div>
-
-
   </div>
 
 {% endblock %}

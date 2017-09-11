@@ -6,39 +6,40 @@
 
 {% block corpo %}
 
-  <h1 class="titulo1">Login</h1>
+  <div class="login">
+    <div class="container d-flex align-items-center h-100">
+      <div class="container">
+        <div class="row justify-content-md-center">
+          <div class="col-md-4">
+            <div class="jumbotron vertical-centralizado">
+              <form class="form-login" method="post">
+                {% csrf_token %}
 
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="col-md-6 col-md-offset-3">
-          <div class="jumbotron vertical-centralizado">
-            <form class="form-login" method="post">
-              {% csrf_token %}
-
-              <div class="form-group">
-                <label>Login:</label>
-                <input class="form-control" type="text" name='username' placeholder="Usuário" required/>
-              </div>
-
-              <div class="form-group">
-                <label>Senha:</label>
-                <input class="form-control" type="password" name='password' placeholder="Senha" required/>
-              </div>
-
-              {% if erro %}
-
-                <div class="alert alert-danger">
-                  {{ msg_erro }}
+                <label>Usuário:</label>
+                <div class="form-group input-group">
+                  <span class="input-group-addon"><i class="fa fa-user-circle"></i></span>
+                  <input class="form-control" type="text" name='username' placeholder="Usuário"/>
                 </div>
 
-              {% endif %}
+                <label>Senha:</label>
+                <div class="form-group input-group">
+                  <span class="input-group-addon"><i class="fa fa-unlock-alt"></i></span>
+                  <input class="form-control" type="password" name='password' placeholder="Senha"/>
+                </div>
 
-              <button class="btn btn-success" type="submit" name="btn_entrar">Entrar</button>
-              <a type="submit" style="float: right; cursor: pointer;" onClick="window.location.href='/nova_conta/'">Cadastrar
-              </a>
+                {% if erro %}
 
-            </form>
+                  <div class="alert alert-danger">
+                    {{ msg_erro }}
+                  </div>
+
+                {% endif %}
+
+                <button class="btn btn-success" type="submit" name="btn_entrar">Entrar</button>
+                <a href="/nova_conta/" style="float: right; cursor: pointer;" class="btn btn-default">Cadastrar</a>
+
+              </form>
+            </div>
           </div>
         </div>
       </div>

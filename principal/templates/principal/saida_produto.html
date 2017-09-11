@@ -8,49 +8,45 @@
 
   <h1 class="titulo1">Saída de Produto</h1>
 
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="col-md-6 col-md-offset-3">
-          <div class="jumbotron">
+  <div class="d-flex justify-content-center">
+    <div class="col-md-5">
+      <div class="jumbotron">
 
-            <form method="post">
-              {% csrf_token %}
+        <form method="post">
+          {% csrf_token %}
 
-              {% for f in form %}
+          {% for f in form %}
+
+            <div class="form-group">
+              <label>{{ f.label }}</label>
+              <div class="controls">
+                {{ f }}
+              </div>
+
+              {% if f.name == form.quantidade.name %}
 
                 <div class="form-group">
-                  <label>{{ f.label }}</label>
-                  <div class="controls">
-                    {{ f }}
-                  </div>
-
-                  {% if f.name == form.quantidade.name %}
-
-                    <div class="form-group">
-                      <label id="id_qtdelote" class="label label-info">qtde disponível:</label>
-                    </div>
-
-                  {% endif %}
-
+                  <label id="id_qtdelote" class="label label-info">qtde disponível:</label>
                 </div>
 
-                {% if f.errors %}
+              {% endif %}
 
-                  <div class="alert alert-warning">
-                    {{ f.errors }}
-                  </div>
+            </div>
 
-                {% endif %}
+            {% if f.errors %}
 
-              {% endfor %}
+              <div class="alert alert-warning">
+                {{ f.errors }}
+              </div>
 
-              <button type="submit" class="btn btn-primary">Gravar</button>
-              <a href="/home/" class="btn btn-default">Cancelar</a>
+            {% endif %}
 
-            </form>
-          </div>
-        </div>
+          {% endfor %}
+
+          <button type="submit" class="btn btn-primary">Gravar</button>
+          <a href="/home/" class="btn btn-default">Cancelar</a>
+
+        </form>
       </div>
     </div>
   </div>
