@@ -26,26 +26,20 @@ from django.utils import timezone
 
 @login_required(login_url='/login')
 def home(request):
-    # queryset = Produto.objects.values('categoria__nome', 'nome', 'quantidade').filter(quantidade=150)
+    form_novo_produto_dialog = ProdutoForm(None)
+    form_nova_categoria_dialog = CategoriaForm(None)
 
-    parametros_filtro = {
-
-    }
-
-    queryset = EntradaProduto.objects.annotate(
-        lote_movimento=F('lote'),
-        nome_produto=F('produto__nome'),
-        nome_categoria=F('produto__categoria__nome'),
-        fornecedor_usuario=F('fornecedor__nome_fantasia'),
-        quantidade_mov=F('quantidade'),
-        data_mov=F('data_cadastro')).extra(select={'tipo_mov': 1}).values(
-        'lote_movimento',
-        'nome_produto',
-        'nome_categoria',
-        'fornecedor_usuario',
-        'quantidade_mov',
-        'data_mov',
-        'tipo_mov').filter(**parametros_filtro)
+    if request.method == 'POST':
+        if 'submit_produto' in request.POST:
+            form_novo_produto_dialog = ProdutoForm(request.POST)
+            if form_novo_produto_dialog.is_valid():
+                form_novo_produto_dialog.save()
+                return redirect('/home/')
+        elif 'submit_categoria' in request.POST:
+            form_nova_categoria_dialog = CategoriaForm(request.POST)
+            if form_nova_categoria_dialog.is_valid():
+                form_nova_categoria_dialog.save()
+                return redirect('/home/')
 
     return render(request, 'principal/index.html', locals())
 
@@ -135,11 +129,6 @@ def novo_produto(request):
             return redirect('/lista_produto/')
 
     return render(request, 'principal/novo_produto.html', {'form': form})
-
-
-@login_required(login_url='/login')
-def novo_produto_dialog(request):
-    return render(request, 'principal/novo_produto_dialog.html')
 
 
 @login_required(login_url='/login')

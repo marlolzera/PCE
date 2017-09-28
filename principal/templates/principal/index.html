@@ -37,17 +37,36 @@
   {#  </table>#}
 
 
-  {#  ///////////////////////////////////// teste modal ////////////////////////////////////////////#}
+  {#  ///////////////////////////////////// modal ////////////////////////////////////////////#}
 
+  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#id_novo_produto_dialog">
+    Novo Produto
+  </button>
 
+  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#id_nova_categoria_dialog">
+    Nova Categoria
+  </button>
 
-  {#  /////////////////////////////////// fim teste modal //////////////////////////////////////////#}
+  {% include "principal/dialogs/novo_produto_dialog.html" with modal_form_id="novo-produto" modal_form_method="POST" form=form_novo_produto_dialog %}
+  {% include "principal/dialogs/nova_categoria_dialog.html" with modal_form_id="nova-categoria" modal_form_method="POST" form=form_nova_categoria_dialog %}
+
+  {#  /////////////////////////////////// fim modal //////////////////////////////////////////#}
 {% endblock %}
 
 {% block javascript %}
 
   <script type="text/javascript" charset="utf-8">
 
+  document.formNovoProdutoHasErrors = {% if form_novo_produto_dialog.errors %}true{% else %}false{% endif %};
+  document.formNovaCategoriaHasErrors = {% if form_nova_categoria_dialog.errors %}true{% else %}false{% endif %};
+
+    $(document).ready(function () {
+      if (document.formNovoProdutoHasErrors) {
+        $('#id_novo_produto_dialog').modal('toggle');
+      } else if (document.formNovaCategoriaHasErrors) {
+        $('#id_nova_categoria_dialog').modal('toggle');
+      }
+    });
 
 
   </script>

@@ -1,10 +1,52 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+<!-- Modal -->
+<div class="modal fade" id="id_nova_categoria_dialog" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Cadastro de Categoria</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <div class="d-flex justify-content-center">
+          <form method="post">
+            {% csrf_token %}
+
+            {% for f in form_nova_categoria_dialog %}
+
+              <div class="form-group">
+                <label>{{ f.label }}</label>
+                <div class="controls">
+                  {{ f }}
+                </div>
+              </div>
+
+              {% if f.errors %}
+
+                <div class="alert alert-warning">
+                  {{ f.errors }}
+                </div>
+
+              {% endif %}
+
+            {% endfor %}
+
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary" value="submit_categoria" name="submit_categoria">Gravar</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript" charset="utf-8">
+
+  $('select').select2({width: '100%'});
+
+</script>

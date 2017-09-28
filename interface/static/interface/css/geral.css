@@ -15,6 +15,14 @@
   align-items: center;
 }
 
+.icone {
+    width: 40px;
+}
+
+.margin-center {
+    margin: auto;
+}
+
 .relevo {
     text-align: center;
     color: #353a40;

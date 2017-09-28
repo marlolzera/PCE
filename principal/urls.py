@@ -8,7 +8,6 @@ urlpatterns = [
     url(r'^lista_produto/$', lista_produto),
     url(r'^atualiza_produto/(?P<id>\d+)/$', atualiza_produto),
     url(r'^deleta_produto/(?P<id>\d+)/$', deleta_produto),
-    url(r'^novo_produto_dialog/$', novo_produto_dialog),
 
     url(r'^nova_categoria/$', nova_categoria),
     url(r'^lista_categoria/$', lista_categoria),

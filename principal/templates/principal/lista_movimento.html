@@ -1,141 +1,147 @@
 {% extends "interface/geral/principal.html" %}
 
 {% block titulo %}
-  Listagem de Movimento
+    Listagem de Movimento
 {% endblock %}
 
 {% block corpo %}
 
-  <h1 class="titulo1">Listagem de Movimentos</h1>
+    <h1 class="titulo1">Listagem de Movimentos</h1>
 
-  <div class="container">
+    <div class="container">
 
-    <div class="listagem-filtro">
-      <form method="get" name="filtro">
-        <div class="form-inline margin-bottom-10">
-          <div class="form-group">
-            <span>Movimentos de</span>
-            <input type="date" class="form-control text-center" name="data_inicial"
-                   value="{{ data_inicial|date:"Y-m-d" }}">
-          </div>
-          <div class="form-group">
-            <span>até</span>
-            <input type="date" class="form-control text-center" name="data_final"
-                   value="{{ data_final|date:"Y-m-d" }}">
-          </div>
-          <div class="form-group">
-            <label for="exampleInputName2">Ordenação:</label>
-            <select class="form-control select2-drop" name="ordenacao" onchange="$('form[name=filtro]').submit()">
+        <div class="listagem-filtro">
+            <form method="get" name="filtro">
+                <div class="form-inline margin-bottom-10">
 
-              <option value="-data_cadastro" {% if ordenacao == '-data_cadastro' %}selected{% endif %}>
-                Mais novo
-              </option>
+                    <div class="form-group">
+                        <span>Movimentos de</span>
+                        <input type="date" class="form-control text-center" name="data_inicial"
+                               value="{{ data_inicial|date:"Y-m-d" }}">
+                    </div>
+                    <div class="form-group">
+                        <span>até</span>
+                        <input type="date" class="form-control text-center" name="data_final"
+                               value="{{ data_final|date:"Y-m-d" }}">
+                    </div>
 
-              <option value="data_cadastro" {% if ordenacao == 'data_cadastro' %}selected{% endif %}>
-                Mais antigo
-              </option>
+                    <label for="exampleInputName2">Ordenação:</label>
+                    <select class="form-control select2-drop" name="ordenacao"
+                            onchange="$('form[name=filtro]').submit()">
 
-            </select>
-          </div>
+                        <option value="-data_cadastro" {% if ordenacao == '-data_cadastro' %}selected{% endif %}>
+                            Mais novo
+                        </option>
 
-          <a href="{{ request.path }}" class="btn btn-warning">
-            <i class="fa fa-close" aria-hidden="true"></i>
-            Limpar
-          </a>
-          <button type="submit" class="btn btn-primary">
-            <i class="fa fa-filter" aria-hidden="true"></i>
-            Filtrar
-          </button>
+                        <option value="data_cadastro" {% if ordenacao == 'data_cadastro' %}selected{% endif %}>
+                            Mais antigo
+                        </option>
+
+                    </select>
+
+                    <div class="col-md-3 text-right">
+                        <a href="{{ request.path }}" class="btn btn-warning">
+                            <i class="fa fa-close" aria-hidden="true"></i>
+                            Limpar
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa fa-filter" aria-hidden="true"></i>
+                            Filtrar
+                        </button>
+                    </div>
+
+                </div>
+            </form>
         </div>
-      </form>
+
+        <div class="table sombra">
+
+            <table class="table listagem bordered table">
+                <thead>
+                <tr>
+                    <th>Descrição</th>
+                    <th>Lote</th>
+                    <th>Produto</th>
+                    <th>Categoria</th>
+                    <th>Fornecedor</th>
+                    <th>Usuário</th>
+                    <th>Qtde</th>
+                    <th>Dt. Movimento</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for i in objs %}
+
+                    {% if i.tipo_mov == 1 %}
+                        <tr class="linha-entrada">
+                            {% elif i.tipo_mov == 2 %}
+                        <tr class="linha-saida">
+                            {% else %}
+                        <tr>
+                    {% endif %}
+
+                <td>{{ i.descricao_mov }}</td>
+                <td>{{ i.lote_mov }}</td>
+                <td>{{ i.nome_produto }}</td>
+                <td>{{ i.nome_categoria }}</td>
+                <td>{{ i.fornecedor_mov }}</td>
+                <td>{{ i.usuario_mov }}</td>
+                <td>{{ i.quantidade_mov }}</td>
+                <td>{{ i.data_mov|date:"d/m/Y" }} às {{ i.data_mov|date:"H:i:s" }}</td>
+
+                </tr>
+
+                {% empty %}
+
+                    <tr>
+                        <td colspan="8" align="center">-- Sem dados para visualizar --</td>
+                    </tr>
+
+                {% endfor %}
+                </tbody>
+            </table>
+
+            {#    /////////////////////////////////// FOOTER ///////////////////////////////////////#}
+
+            <div class="row d-flex align-items-center h-100">
+
+                {#------------------------- legenda ----------------------------#}
+                <div class="col-md-4 text-left">
+                    <ul class="legenda">
+                        <li><span class="entrada"></span> Entrada</li>
+                        <li><span class="saida"></span> Saída</li>
+                    </ul>
+                </div>
+                {#--------------------------- paginação ------------------------#}
+                <div class="col-md-4 text-center">
+                    {% if objs.has_previous %}
+                        <a href="?{{ str_busca }}&page={{ objs.previous_page_number }}" type="button"
+                           class="btn btn-primary btn-sm">&laquo;</a>
+                    {% endif %}
+                    {% for num in objs.paginator.page_range %}
+                        {% ifequal num objs.number %}
+                            <a href="#" type="button" class="btn btn-info btn-sm">{{ num }}</a>
+                        {% else %}
+                            <a href="?{{ str_busca }}&page={{ num }}" type="button"
+                               class="btn btn-primary btn-sm">{{ num }}</a>
+                        {% endifequal %}
+                    {% endfor %}
+                    {% if objs.has_next %}
+                        <a href="?{{ str_busca }}&page={{ objs.next_page_number }}" type="button"
+                           class="btn btn-primary btn-sm">&raquo;</a>
+                    {% endif %}
+                </div>
+                {#------------------------ botões pdf excel -----------------------------------#}
+                <div class="col-md-4 text-right">
+                    <a href="?export=pdf{{ query_string }}" class="btn btn-primary">
+                        <i class="fa fa-download"></i> Exportar PDF
+                    </a>
+                    <a href="?export=xls{{ query_string }}" class="btn btn-success">
+                        <i class="fa fa-file-excel-o"></i> Exportar Excel
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <div class="table sombra">
-
-      <table class="table listagem bordered table">
-        <thead>
-        <tr>
-          <th>Descrição</th>
-          <th>Lote</th>
-          <th>Produto</th>
-          <th>Categoria</th>
-          <th>Fornecedor</th>
-          <th>Usuário</th>
-          <th>Qtde</th>
-          <th>Dt. Movimento</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for i in objs %}
-
-          {% if i.tipo_mov == 1 %}
-            <tr class="linha-entrada">
-              {% elif i.tipo_mov == 2 %}
-            <tr class="linha-saida">
-              {% else %}
-            <tr>
-          {% endif %}
-
-        <td>{{ i.descricao_mov }}</td>
-        <td>{{ i.lote_mov }}</td>
-        <td>{{ i.nome_produto }}</td>
-        <td>{{ i.nome_categoria }}</td>
-        <td>{{ i.fornecedor_mov }}</td>
-        <td>{{ i.usuario_mov }}</td>
-        <td>{{ i.quantidade_mov }}</td>
-        <td>{{ i.data_mov|date:"d/m/Y" }} às {{ i.data_mov|date:"H:i:s" }}</td>
-
-        </tr>
-
-        {% empty %}
-
-          <tr>
-            <td colspan="8" align="center">-- Sem dados para visualizar --</td>
-          </tr>
-
-        {% endfor %}
-        </tbody>
-      </table>
-
-      {#    /////////////////////////////////// FOOTER ///////////////////////////////////////#}
-
-      <div class="row d-flex align-items-center h-100">
-
-{#------------------------- legenda ----------------------------#}
-        <div class="col-md-4 text-left">
-          <ul class="legenda">
-            <li><span class="entrada"></span> Entrada</li>
-            <li><span class="saida"></span> Saída</li>
-          </ul>
-        </div>
-{#--------------------------- paginação ------------------------#}
-        <div class="col-md-4 text-center">
-          {% if objs.has_previous %}
-            <a href="?{{ str_busca }}&page={{ objs.previous_page_number }}" type="button"
-               class="btn btn-primary btn-sm">&laquo;</a>
-          {% endif %}
-          {% for num in objs.paginator.page_range %}
-            {% ifequal num objs.number %}
-              <a href="#" type="button" class="btn btn-info btn-sm">{{ num }}</a>
-            {% else %}
-              <a href="?{{ str_busca }}&page={{ num }}" type="button" class="btn btn-primary btn-sm">{{ num }}</a>
-            {% endifequal %}
-          {% endfor %}
-          {% if objs.has_next %}
-            <a href="?{{ str_busca }}&page={{ objs.next_page_number }}" type="button" class="btn btn-primary btn-sm">&raquo;</a>
-          {% endif %}
-        </div>
-{#------------------------ botões pdf excel -----------------------------------#}
-        <div class="col-md-4 text-right">
-          <a href="?export=pdf{{ query_string }}" class="btn btn-primary">
-            <i class="fa fa-download"></i> Exportar PDF
-          </a>
-          <a href="?export=xls{{ query_string }}" class="btn btn-success">
-            <i class="fa fa-file-excel-o"></i> Exportar Excel
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
 
 {% endblock %}
